@@ -83,11 +83,13 @@ import productFeatureGrid from './product/feature-grid';
 import productAnnouncement from './product/announcement';
 import productMinimalBadge from './product/minimal-badge';
 import productDarkPremium from './product/dark-premium';
+import productShortcutTip from './product/shortcut-tip';
 
 [
   productCenteredHero, productSplitScreen, productGradientWave, productNeonGlow,
   productGlassmorphism, productAppShowcase, productFeatureGrid, productAnnouncement,
   productMinimalBadge, productDarkPremium,
+  productShortcutTip,
 ].forEach(registerTemplate);
 
 // SaaS
