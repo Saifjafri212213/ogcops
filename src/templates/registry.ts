@@ -193,10 +193,12 @@ import newsletterCuratedLinks from './newsletter/curated-links';
 import newsletterMinimalNumber from './newsletter/minimal-number';
 import newsletterNewspaperFold from './newsletter/newspaper-fold';
 import newsletterSubscriberCount from './newsletter/subscriber-count';
+import newsletterSubscribeCard from './newsletter/subscribe-card';
 
 [
   newsletterIssueCard, newsletterDigestBanner, newsletterPreviewText, newsletterEditorial,
   newsletterCuratedLinks, newsletterMinimalNumber, newsletterNewspaperFold, newsletterSubscriberCount,
+  newsletterSubscribeCard,
 ].forEach(registerTemplate);
 
 // Quote
