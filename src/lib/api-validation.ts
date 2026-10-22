@@ -1,7 +1,11 @@
 import { z } from 'zod';
 
+// An empty value counts as missing, so `?imageUrl=` (a URL built from CMS data
+// for a post with no cover image) falls back to the default instead of failing.
+const emptyAsMissing = (v: unknown) => (v === '' ? undefined : v);
+
 export const ogQuerySchema = z.object({
-  template: z.string().default('blog-minimal-dark'),
+  template: z.preprocess(emptyAsMissing, z.string().default('blog-minimal-dark')),
   title: z.string().optional(),
   description: z.string().optional().default(''),
   author: z.string().optional().default(''),
@@ -11,8 +15,8 @@ export const ogQuerySchema = z.object({
   bgColor: z.string().optional().default(''),
   accentColor: z.string().optional().default(''),
   textColor: z.string().optional().default(''),
-  logoUrl: z.string().url().optional(),
-  imageUrl: z.string().url().optional(),
+  logoUrl: z.preprocess(emptyAsMissing, z.string().url().optional()),
+  imageUrl: z.preprocess(emptyAsMissing, z.string().url().optional()),
   width: z.preprocess(
     (v) => (v === '' || v === undefined ? undefined : v),
     z.coerce.number().min(200).max(2400).optional()

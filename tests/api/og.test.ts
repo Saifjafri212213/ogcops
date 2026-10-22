@@ -99,6 +99,52 @@ describe('OG API Validation', () => {
   });
 });
 
+describe('OG API Validation: empty values count as missing', () => {
+  it('uses the default template for an empty template', () => {
+    const result = ogQuerySchema.safeParse({ template: '' });
+    expect(result.success).toBe(true);
+    if (result.success) expect(result.data.template).toBe('blog-minimal-dark');
+  });
+
+  it.each(['imageUrl', 'logoUrl'])('treats an empty %s as not provided', (key) => {
+    const result = ogQuerySchema.safeParse({ title: 'Hi', [key]: '' });
+    expect(result.success).toBe(true);
+    if (result.success) expect(result.data[key as 'imageUrl' | 'logoUrl']).toBeUndefined();
+  });
+
+  it.each(['imageUrl', 'logoUrl'])('still accepts a real URL for %s', (key) => {
+    const result = ogQuerySchema.safeParse({ [key]: 'https://example.com/cover.png' });
+    expect(result.success).toBe(true);
+    if (result.success) expect(result.data[key as 'imageUrl' | 'logoUrl']).toBe('https://example.com/cover.png');
+  });
+
+  it.each(['imageUrl', 'logoUrl'])('still rejects a %s that is not a URL', (key) => {
+    const result = ogQuerySchema.safeParse({ [key]: 'not-a-url' });
+    expect(result.success).toBe(false);
+    if (!result.success) expect(result.error.issues[0].path).toEqual([key]);
+  });
+
+  it('keeps a template that is set', () => {
+    const result = ogQuerySchema.safeParse({ template: 'blog-photo-overlay' });
+    expect(result.success).toBe(true);
+    if (result.success) expect(result.data.template).toBe('blog-photo-overlay');
+  });
+
+  it('reads empty values from a query string the way the route does', () => {
+    const parsed = parseSearchParams(
+      new URLSearchParams('template=&imageUrl=&logoUrl=&title=Hi'),
+      ogQuerySchema
+    );
+    expect(parsed.success).toBe(true);
+    if (parsed.success) {
+      expect(parsed.data.template).toBe('blog-minimal-dark');
+      expect(parsed.data.imageUrl).toBeUndefined();
+      expect(parsed.data.logoUrl).toBeUndefined();
+      expect(parsed.data.title).toBe('Hi');
+    }
+  });
+});
+
 describe('resolveDimensions', () => {
   it('defaults to 1200x630 when neither dimension is provided', () => {
     expect(resolveDimensions()).toEqual({
@@ -453,3 +499,52 @@ describe('OG API dimension resolution and scaling', () => {
   });
 });
 
+describe('OG API empty parameters fall back to the defaults', () => {
+  /** The element the route handed to the renderer for this URL. */
+  async function elementFor(query: string) {
+    const { renderToPng } = await import('@/lib/og-engine');
+    vi.mocked(renderToPng).mockClear();
+    const res = await GET(makeContext(`${BASE}${query}`));
+    expect(res.status, query).toBe(200);
+    expect(renderToPng).toHaveBeenCalledOnce();
+    return vi.mocked(renderToPng).mock.calls[0][0];
+  }
+
+  it('renders the same image for an empty imageUrl as for none', async () => {
+    const without = await elementFor('?template=blog-photo-overlay&title=Hi');
+    const empty = await elementFor('?template=blog-photo-overlay&title=Hi&imageUrl=');
+    expect(empty).toEqual(without);
+  });
+
+  it('renders the same image for an empty logoUrl as for none', async () => {
+    const without = await elementFor('?template=blog-minimal-dark&title=Hi');
+    const empty = await elementFor('?template=blog-minimal-dark&title=Hi&logoUrl=');
+    expect(empty).toEqual(without);
+  });
+
+  it('renders blog-minimal-dark for an empty template', async () => {
+    const named = await elementFor('?template=blog-minimal-dark&title=Hi');
+    expect(await elementFor('?template=&title=Hi')).toEqual(named);
+    expect(await elementFor('?title=Hi')).toEqual(named);
+  });
+
+  it('does not answer 404 or 400 for the empty values', async () => {
+    for (const query of ['?template=', '?imageUrl=', '?logoUrl=', '?template=&imageUrl=&logoUrl=']) {
+      const res = await GET(makeContext(`${BASE}${query}`));
+      expect(res.status, query).toBe(200);
+    }
+  });
+
+  it('still returns 400 without caching for an imageUrl that is not a URL', async () => {
+    const res = await GET(makeContext(`${BASE}?template=blog-photo-overlay&imageUrl=not-a-url`));
+    expect(res.status).toBe(400);
+    expect(res.headers.get('cache-control')).toBe('no-store');
+    const json = (await res.json()) as { error: string };
+    expect(json.error).toMatch(/imageUrl/);
+  });
+
+  it('still returns 404 for a template that does not exist', async () => {
+    const res = await GET(makeContext(`${BASE}?template=does-not-exist`));
+    expect(res.status).toBe(404);
+  });
+});
