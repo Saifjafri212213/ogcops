@@ -129,12 +129,14 @@ import githubMinimalBadge from './github/minimal-badge';
 import githubMatrix from './github/matrix';
 import githubContributorsWall from './github/contributors-wall';
 import githubIssueCard from './github/issue-card';
+import githubPullRequest from './github/pull-request';
 
 [
   githubRepoCard, githubContributionGraph, githubReadmeHero, githubReleaseNotes,
   githubLanguageBars, githubStarsBanner, githubTerminalStyle, githubCodeWindow,
   githubMinimalBadge, githubMatrix, githubContributorsWall,
   githubIssueCard,
+  githubPullRequest,
 ].forEach(registerTemplate);
 
 // Event
