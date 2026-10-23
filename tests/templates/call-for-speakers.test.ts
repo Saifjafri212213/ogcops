@@ -109,6 +109,30 @@ describe('event-call-for-speakers', () => {
       expect(() => render({ topics: undefined })).not.toThrow();
       expect(chipsOf({ topics: 42 })).toEqual(['42']);
     });
+
+    // When the event name wraps onto two lines the card is full, and a flex item that is allowed
+    // to shrink gets squeezed until its outline is gone. The chips and their row must not shrink.
+    it('does not let the chips or their row shrink', () => {
+      const chain = (node: unknown, text: string): SatoriElement[] | undefined => {
+        if (Array.isArray(node)) {
+          for (const child of node) {
+            const found = chain(child, text);
+            if (found) return found;
+          }
+          return undefined;
+        }
+        if (node && typeof node === 'object' && 'props' in node) {
+          const element = node as SatoriElement;
+          if (element.props.children === text) return [element];
+          const found = chain(element.props.children, text);
+          return found && [...found, element];
+        }
+        return undefined;
+      };
+      const [, chip, row] = chain(tree(), 'AI') ?? [];
+      expect(chip.props.style?.flexShrink).toBe(0);
+      expect(row.props.style?.flexShrink).toBe(0);
+    });
   });
 
   describe('deadline', () => {

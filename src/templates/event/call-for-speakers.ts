@@ -67,6 +67,7 @@ const template: TemplateDefinition = {
       props: {
         style: {
           display: 'flex',
+          flexShrink: 0,
           padding: '10px 24px',
           borderRadius: '999px',
           background: `${accentColor}22`,
@@ -133,7 +134,7 @@ const template: TemplateDefinition = {
                 {
                   type: 'div',
                   props: {
-                    style: { display: 'flex', flexWrap: 'wrap', gap: '14px', marginTop: '36px' },
+                    style: { display: 'flex', flexShrink: 0, flexWrap: 'wrap', gap: '14px', marginTop: '36px' },
                     children: chips,
                   },
                 },
