@@ -231,10 +231,12 @@ import quoteBoldHighlight from './quote/bold-highlight';
 import quoteMinimalDash from './quote/minimal-dash';
 import quotePhotoBackground from './quote/photo-background';
 import quoteStickyNote from './quote/sticky-note';
+import quoteCodeComment from './quote/code-comment';
 
 [
   quoteCenteredSerif, quoteGradientCard, quoteSpeechBubble, quoteTwitterStyle,
   quoteBookPage, quoteBoldHighlight, quoteMinimalDash, quotePhotoBackground, quoteStickyNote,
+  quoteCodeComment,
 ].forEach(registerTemplate);
 
 // E-commerce
