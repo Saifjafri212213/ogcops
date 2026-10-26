@@ -12,3 +12,4 @@ export { default as eventAgenda } from './agenda';
 export { default as eventOfficeHours } from './office-hours';
 export { default as eventWinners } from './winners';
 export { default as eventCallForSpeakers } from './call-for-speakers';
+export { default as eventRescheduled } from './rescheduled';

@@ -164,12 +164,14 @@ import eventAgenda from './event/agenda';
 import eventOfficeHours from './event/office-hours';
 import eventWinners from './event/winners';
 import eventCallForSpeakers from './event/call-for-speakers';
+import eventRescheduled from './event/rescheduled';
 
 [
   eventConference, eventMeetup, eventWebinar, eventWorkshop, eventHackathon,
   eventSpeakerSpotlight, eventCountdown, eventVenueMap, eventTicketCta, eventMultiSpeaker,
   eventAgenda, eventOfficeHours, eventWinners,
   eventCallForSpeakers,
+  eventRescheduled,
 ].forEach(registerTemplate);
 
 // Podcast
