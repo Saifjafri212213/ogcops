@@ -202,12 +202,14 @@ import developerLinkTree from './developer/link-tree';
 import developerOpenToWork from './developer/open-to-work';
 import developerDayStreak from './developer/day-streak';
 import developerNow from './developer/now';
+import developerYearReview from './developer/year-review';
 
 [
   developerPortfolioCard, developerTechStack, developerTerminalBio, developerGradientProfile,
   developerSkillsRadar, developerGithubStyle, developerResumeHeader, developerVscodeTheme,
   developerLinkTree, developerOpenToWork, developerDayStreak,
   developerNow,
+  developerYearReview,
 ].forEach(registerTemplate);
 
 // Newsletter
