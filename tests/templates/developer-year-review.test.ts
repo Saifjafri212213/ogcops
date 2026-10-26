@@ -240,6 +240,15 @@ describe('developer-year-review', () => {
       expect(size('FY2026-27')).toBeLessThan(size('FY2026'));
     });
 
+    // A long name in capitals can take more room than is left next to the year. The year must
+    // keep its width and the gap, and the name wraps beside it, instead of the year being squeezed.
+    it('does not let the year shrink next to a long name', () => {
+      for (const overrides of [{}, { name: 'MAXIMILIANO WOLFGANG RODRIGUEZ' }, { name: 'n'.repeat(60), year: 'FY2026-27' }]) {
+        expect(styleOf(yearSpan(overrides)).flexShrink, JSON.stringify(overrides)).toBe(0);
+      }
+      expect(styleOf(nameSpan({ name: 'MAXIMILIANO WOLFGANG RODRIGUEZ' })).marginLeft).toBe('36px');
+    });
+
     it('shortens a very long year and name', () => {
       const year = texts(yearSpan({ year: 'x'.repeat(40) })).join('');
       expect(year.length).toBeLessThanOrEqual(10);

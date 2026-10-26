@@ -123,7 +123,7 @@ const template: TemplateDefinition = {
             props: {
               style: { display: 'flex', alignItems: 'flex-end' },
               children: [
-                { type: 'span', props: { style: { fontSize: `${yearSize}px`, fontWeight: 700, color: accentText, lineHeight: 1, letterSpacing: '-0.04em' }, children: year } },
+                { type: 'span', props: { style: { flexShrink: 0, fontSize: `${yearSize}px`, fontWeight: 700, color: accentText, lineHeight: 1, letterSpacing: '-0.04em' }, children: year } },
                 ...(name
                   ? [
                       {
