@@ -11,3 +11,4 @@ export { default as jobInterviewProcess } from './interview-process';
 export { default as jobBenefits } from './benefits';
 export { default as jobInternship } from './internship';
 export { default as jobReferral } from './referral';
+export { default as jobNewHire } from './new-hire';
