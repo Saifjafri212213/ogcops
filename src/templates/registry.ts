@@ -305,11 +305,12 @@ import jobOpenRoles from './job/open-roles';
 import jobInterviewProcess from './job/interview-process';
 import jobBenefits from './job/benefits';
 import jobInternship from './job/internship';
+import jobReferral from './job/referral';
 
 [
   jobListingCard, jobTechStackRole, jobRemoteBadge, jobCompanyCulture,
   jobSalaryHighlight, jobTeamPhoto, jobStartupHiring, jobDeveloperRole,
-  jobOpenRoles, jobInterviewProcess, jobBenefits, jobInternship,
+  jobOpenRoles, jobInterviewProcess, jobBenefits, jobInternship, jobReferral,
 ].forEach(registerTemplate);
 
 // Tutorial
