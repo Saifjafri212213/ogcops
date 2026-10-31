@@ -1,0 +1,28 @@
+
+        <!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <title>Error</title>
+            <script type="module">
+              const error = {"message":"The file does not exist at \"/Users/saifullahjafri/ogcops/node_modules/.vite/deps_ssr/@astrojs_cloudflare_entrypoints_server.js?v=e6dee330\" which is in the optimize deps directory. The dependency might be incompatible with the dep optimizer. Try adding it to `optimizeDeps.exclude`.","stack":"    at runInRunnerObject (workers/runner-worker/index.js:107:3)\n    at getWorkerEntryExport (workers/runner-worker/index.js:241:17)\n    at null.\u003canonymous> (workers/runner-worker/index.js:360:24)\n    at maybeCaptureError (workers/runner-worker/index.js:51:10)","frame":""}
+              try {
+                const { ErrorOverlay } = await import("/@vite/client")
+                document.body.appendChild(new ErrorOverlay(error))
+              } catch {
+                const h = (tag, text) => {
+                  const el = document.createElement(tag)
+                  el.textContent = text
+                  return el
+                }
+                document.body.appendChild(h('h1', 'Internal Server Error'))
+                document.body.appendChild(h('h2', error.message))
+                document.body.appendChild(h('pre', error.stack))
+                document.body.appendChild(h('p', '(Error overlay failed to load)'))
+              }
+            </script>
+          </head>
+          <body>
+          </body>
+        </html>
+      
